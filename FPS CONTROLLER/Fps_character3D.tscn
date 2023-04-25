@@ -34,6 +34,6 @@ environment = SubResource("Environment_tq8f0")
 fov = 90.0
 near = 0.001
 
-[node name="Head_checker" type="RayCast3D" parent="."]
+[node name="Head_check" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
 target_position = Vector3(0, 1, 0)
