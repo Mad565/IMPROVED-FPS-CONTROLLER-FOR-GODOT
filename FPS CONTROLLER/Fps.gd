@@ -108,4 +108,3 @@ func CROUCH(delta):
 	player_capsule.shape.height =  clamp(player_capsule.shape.height, crouch_height,normal_height)
 
 
-
