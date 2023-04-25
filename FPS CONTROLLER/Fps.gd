@@ -25,17 +25,15 @@ var crouch_height = 1.0
 # LOWEST HEIGHT AND MAXIMUM TRANSITION SPEED OF CROUCHING.
 var crouch_speed = 10.0
 # MOUSE SENSITIVITY.
-var mouse_sense = 0.05
+var mouse_sense = 0.1
 #IMPROTANT VARIABLES FOR PLAYER MOVEMENT.
 var is_forward_moving = false
 var direction = Vector3()
-var gravity_vector = Vector3()
-var movement = Vector3()
 # PLAYER.
-@onready var head = $Head
-@onready var camera3d = $Head/Camera3D
-@onready var player_capsule = $CollisionShape3D
-@onready var head_check = $Head_check
+@onready var head := $Head
+@onready var camera3d := $Head/Camera3D
+@onready var player_capsule := $CollisionShape3D
+@onready var head_check := $Head_check
 
 # CALLED WHEN THE NODE ENTERS THE SCENE TREE FOR THE FIRST TIME.
 func _ready():
@@ -51,7 +49,7 @@ func _input(event):
 
 # CALLED EVERY FRAME. 'DELTA' IS THE ELAPSED TIME SINCE THE PREVIOUS FRAME.
 # ALSO THIS WILL HANDLE ALL THE PLAYERS MOVEMENT AND PHYSICS.
-func _physics_process(delta):
+func _process(delta):
 	# ADDS CROUCHING TO THE PLAYER MEANING IT CALLS THE CROUCH FUNCTION WHICH WE MADE.
 	CROUCH(delta)
 	# IF ESCAPE IS PRESSED IT WILL SHOW THE MOUSE CURSOR.
@@ -75,21 +73,20 @@ func _physics_process(delta):
 		speed = sprint_speed
 	if Input.is_action_pressed("crouch") and Input.is_action_pressed("sprint"):
 		speed = normal_speed
-	#JUMPING AND GRAVITY.
-	# ADDS THE GRAVITY.
+	# ADDS JUMPING AND GRAVITY.
 	if not is_on_floor():
 		accel = accel_in_air
 		velocity.y -= gravity * delta
 	else:
 		accel = accel_normal
 		velocity.y -= jump_velocity 
-	# HANDLE JUMP.
+	# HANDLES JUMP.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		accel = accel_in_air
-		velocity.y = jump_velocity 
-	#make it move
+	# IF THE PLAYER PRESSES THE "ui_accept" AND WHEN THE CHARACTER IS ON THE FLOOR,
+	# SET THE Y VELOCITY TO THE JUMP VELOCITY.
+		velocity.y = jump_velocity
+	#MAKES IT MOVE.
 	velocity = velocity.lerp(direction * speed, accel * delta)
-	movement = velocity + gravity_vector
 	#MOVES THE BODY BASED ON VELOCITY.
 	move_and_slide()
 
