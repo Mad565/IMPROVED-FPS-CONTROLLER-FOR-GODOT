@@ -16,7 +16,7 @@ issues fixed from past project:
 
 player is sprinting while crouched is fixed.
 
-sprint is always forward.
+now the sprint is always forward.
 
 
 
