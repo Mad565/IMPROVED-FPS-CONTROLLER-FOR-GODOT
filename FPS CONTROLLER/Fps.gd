@@ -5,7 +5,7 @@ var speed
 # NORMAL SPEED.
 var normal_speed = 5.0
 # SPRINT/RUNING SPEED.
-var sprint_speed = 15.0
+var sprint_speed = 10.0
 # accel_in_air STANDS FOR ACCELERATION IN HANPPENING IN AIR. 
 # accel_normal STANDS FOR ACCELERATION IN NOT HANPPENING IN AIR BUT INSTEAD ON GROUND.
 const accel_normal = 10.0
@@ -24,19 +24,18 @@ var normal_height = 2.0
 var crouch_height = 1.0
 # LOWEST HEIGHT AND MAXIMUM TRANSITION SPEED OF CROUCHING.
 var crouch_speed = 10.0
-
 # MOUSE SENSITIVITY.
-var mouse_sense = 0.1
+var mouse_sense = 0.05
 #IMPROTANT VARIABLES FOR PLAYER MOVEMENT.
 var is_forward_moving = false
 var direction = Vector3()
 var gravity_vector = Vector3()
 var movement = Vector3()
-# player.
+# PLAYER.
 @onready var head = $Head
 @onready var camera3d = $Head/Camera3D
 @onready var player_capsule = $CollisionShape3D
-@onready var head_checker = $Head_checker
+@onready var head_check = $Head_check
 
 # CALLED WHEN THE NODE ENTERS THE SCENE TREE FOR THE FIRST TIME.
 func _ready():
@@ -58,46 +57,46 @@ func _physics_process(delta):
 	# IF ESCAPE IS PRESSED IT WILL SHOW THE MOUSE CURSOR.
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	#get keyboard input
+	#GET KEYBOARD INPUT.
 	direction = Vector3.ZERO
 	speed = normal_speed
 	# GETS KEYBOARD INPUT.
 	# GET THE INPUT DIRECTION AND HANDLE THE MOVEMENT/DECELERATION.
 	# AS GOOD PRACTICE, YOU SHOULD REPLACE UI ACTIONS WITH CUSTOM GAMEPLAY ACTIONS.
 	var h_rotation = global_transform.basis.get_euler().y
-	var f_input = Input.get_action_strength("MOVE_BACKWARD") - Input.get_action_strength("MOVE_FORWARD")
-	if f_input < 0.0:
+	var input_direction = Input.get_vector("MOVE_LEFT", "MOVE_RIGHT", "MOVE_FORWARD", "MOVE_BACKWARD")
+	if input_direction.y < 0.0:
 		is_forward_moving = true
 	else:
 		is_forward_moving = false
-	var h_input = Input.get_action_strength("MOVE_RIGHT") - Input.get_action_strength("MOVE_LEFT")
-	direction = Vector3(h_input, 0.0, f_input).rotated(Vector3.UP, h_rotation).normalized()
+	direction = Vector3(input_direction.x, 0.0, input_direction.y).rotated(Vector3.UP, h_rotation).normalized()
 	#SWITCHING BETWEEN SPEEDS 
 	if Input.is_action_pressed("sprint") and is_forward_moving:
 		speed = sprint_speed
 	if Input.is_action_pressed("crouch") and Input.is_action_pressed("sprint"):
 		speed = normal_speed
-	#jumping and gravity.
-	# Adds the gravity.
+	#JUMPING AND GRAVITY.
+	# ADDS THE GRAVITY.
 	if not is_on_floor():
 		accel = accel_in_air
 		velocity.y -= gravity * delta
 	else:
 		accel = accel_normal
 		velocity.y -= jump_velocity 
-	# Handle Jump.
+	# HANDLE JUMP.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		accel = accel_in_air
 		velocity.y = jump_velocity 
 	#make it move
 	velocity = velocity.lerp(direction * speed, accel * delta)
 	movement = velocity + gravity_vector
-	#Moves the body based on velocity.
+	#MOVES THE BODY BASED ON VELOCITY.
 	move_and_slide()
-	# the crouch function.
+
+# THE CROUCH FUNCTION.
 func CROUCH(delta):
 	var colliding = false
-	if head_checker.is_colliding():
+	if head_check.is_colliding():
 		colliding = true
 	if Input.is_action_pressed("crouch"):
 		# IT WILL LOWER THE SIZE OF THE CAPSULE BY THE CROUCHING SPEED AND DECREASES THE JUMP VALUE AND ,
