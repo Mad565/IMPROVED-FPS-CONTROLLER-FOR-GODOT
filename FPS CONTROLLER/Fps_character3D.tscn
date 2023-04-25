@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://b5x2vn8i0kqvs"]
+
+[ext_resource type="Script" path="res://FPS CONTROLLER/Fps.gd" id="1_s5gs8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6qgcx"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_iw7xu"]
+
+[sub_resource type="Sky" id="Sky_b0e4i"]
+sky_material = SubResource("ProceduralSkyMaterial_iw7xu")
+
+[sub_resource type="Environment" id="Environment_tq8f0"]
+background_mode = 2
+sky = SubResource("Sky_b0e4i")
+ambient_light_source = 3
+reflected_light_source = 2
+tonemap_mode = 2
+tonemap_exposure = 1.5
+tonemap_white = 1.5
+glow_blend_mode = 1
+
+[node name="Fps_character3D" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_s5gs8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_6qgcx")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head"]
+environment = SubResource("Environment_tq8f0")
+fov = 90.0
+near = 0.001
+
+[node name="Head_checker" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+target_position = Vector3(0, 1, 0)
