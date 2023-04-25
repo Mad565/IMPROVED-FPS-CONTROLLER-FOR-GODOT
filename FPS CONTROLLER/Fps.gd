@@ -106,3 +106,6 @@ func CROUCH(delta):
 		jump_velocity = 3.5
 		player_capsule.shape.height += crouch_speed * delta
 	player_capsule.shape.height =  clamp(player_capsule.shape.height, crouch_height,normal_height)
+
+
+
