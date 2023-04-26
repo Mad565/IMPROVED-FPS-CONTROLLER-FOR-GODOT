@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 # MOVEMENT SPEEDS.
-var speed 
+var speed
 # NORMAL SPEED.
 var normal_speed = 5.0
 # SPRINT/RUNING SPEED.
@@ -25,7 +25,7 @@ var crouch_height = 1.0
 # LOWEST HEIGHT AND MAXIMUM TRANSITION SPEED OF CROUCHING.
 var crouch_speed = 10.0
 # MOUSE SENSITIVITY.
-var mouse_sense = 0.1
+var mouse_sense = 0.15
 #IMPROTANT VARIABLES FOR PLAYER MOVEMENT.
 var is_forward_moving = false
 var direction = Vector3()
@@ -45,7 +45,7 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		rotate_y(deg_to_rad(-event.relative.x * mouse_sense))
 		head.rotate_x(deg_to_rad(-event.relative.y * mouse_sense))
-		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
+		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90.0), deg_to_rad(90.0))
 
 # CALLED EVERY FRAME. 'DELTA' IS THE ELAPSED TIME SINCE THE PREVIOUS FRAME.
 # ALSO THIS WILL HANDLE ALL THE PLAYERS MOVEMENT AND PHYSICS.
@@ -61,13 +61,12 @@ func _process(delta):
 	# GETS KEYBOARD INPUT.
 	# GET THE INPUT DIRECTION AND HANDLE THE MOVEMENT/DECELERATION.
 	# AS GOOD PRACTICE, YOU SHOULD REPLACE UI ACTIONS WITH CUSTOM GAMEPLAY ACTIONS.
-	var h_rotation = global_transform.basis.get_euler().y
 	var input_direction = Input.get_vector("MOVE_LEFT", "MOVE_RIGHT", "MOVE_FORWARD", "MOVE_BACKWARD")
 	if input_direction.y < 0.0:
 		is_forward_moving = true
 	else:
 		is_forward_moving = false
-	direction = Vector3(input_direction.x, 0.0, input_direction.y).rotated(Vector3.UP, h_rotation).normalized()
+	direction = (transform.basis * Vector3(input_direction.x, 0.0, input_direction.y)).normalized()
 	#SWITCHING BETWEEN SPEEDS 
 	if Input.is_action_pressed("sprint") and is_forward_moving:
 		speed = sprint_speed
@@ -79,7 +78,7 @@ func _process(delta):
 		velocity.y -= gravity * delta
 	else:
 		accel = accel_normal
-		velocity.y -= jump_velocity 
+		velocity.y -= jump_velocity
 	# HANDLES JUMP.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 	# IF THE PLAYER PRESSES THE "ui_accept" AND WHEN THE CHARACTER IS ON THE FLOOR,
@@ -98,12 +97,13 @@ func CROUCH(delta):
 	if Input.is_action_pressed("crouch"):
 		# IT WILL LOWER THE SIZE OF THE CAPSULE BY THE CROUCHING SPEED AND DECREASES THE JUMP VALUE AND ,
 		# SETS SPEED TO NORMAL SPEED. 
-		speed = normal_speed
+		sprint_speed = 5.0
 		jump_velocity = 0.0
 		player_capsule.shape.height -= crouch_speed * delta
 	elif not colliding:
 		# IT WILL INCREASE THE SIZE OF THE CAPSULE BY THE CROUCHING SPEED AND RESETS THE JUMP VALUE.
-		jump_velocity = 3.5
+		sprint_speed = 10.0
+		jump_velocity = 4.5
 		player_capsule.shape.height += crouch_speed * delta
 	player_capsule.shape.height =  clamp(player_capsule.shape.height, crouch_height,normal_height)
 
