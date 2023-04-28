@@ -12,7 +12,8 @@ jumping.
 
 walking.
 
--names for wasd keybindings are "MOVE_FORWARD" "MOVE_BACKWARD" "MOVE_LEFT" "MOVE_RIGHT" "crouch" and "sprint"
+#PLEASE SET THE INPUTS IN INPUT MAP 
+-names for wasd keybindings are "MOVE_FORWARD" "MOVE_BACKWARD" "MOVE_LEFT" "MOVE_RIGHT". and these inputs are for crouching and sprinting "crouch" and "sprint"
 
 issues fixed from past project:
 
