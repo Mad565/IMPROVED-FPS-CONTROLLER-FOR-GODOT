@@ -12,7 +12,7 @@ jumping.
 
 walking.
 
--names for wasd keybindings are "move_forward" "move_backward" "MOVE_LEFT" and "move_right"
+-names for wasd keybindings are "MOVE_FORWARD" "MOVE_BACKWARD" "MOVE_LEFT" "MOVE_RIGHT" "crouch" and "sprint"
 
 issues fixed from past project:
 
