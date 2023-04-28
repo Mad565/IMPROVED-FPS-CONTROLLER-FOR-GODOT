@@ -12,6 +12,8 @@ jumping.
 
 walking.
 
+-names for wasd keybindings are "move_forward" "move_backward" "MOVE_LEFT" and "move_right"
+
 issues fixed from past project:
 
 player is sprinting while crouched is fixed.
