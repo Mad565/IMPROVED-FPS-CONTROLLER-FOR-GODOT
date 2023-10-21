@@ -4,7 +4,7 @@ IMPROVED FPS CONTROLLER FOR GODOT 4.X
 
 
 FEATURS:
--
+:
 crouching.
 -
 sprinting.
