@@ -3,7 +3,7 @@
 IMPROVED FPS CONTROLLER FOR GODOT 4.X
 
 
-FEATURS: crouching. sprinting. jumping. walking.
+FEATURS: Crouching, Sprinting, Jumping, Walking
 -------------------------------
 #PLEASE SET THE INPUTS IN INPUT MAP 
 
